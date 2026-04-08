@@ -98,7 +98,7 @@ table{width:100%;border-collapse:collapse;font-size:14px}
 thead th{background:var(--brand-dark);color:white;padding:11px 16px;text-align:left;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
 .tbl-wrap-dark thead th{background:rgba(255,255,255,.08)}
 tbody td{padding:11px 16px;border-bottom:1px solid #E5E7EB;vertical-align:top}
-.tbl-wrap-dark tbody td{border-color:rgba(255,255,255,.08);color:rgba(255,255,255,.85)}
+.tbl-wrap-dark tbody td{border-color:rgba(255,255,255,.08);color:rgba(255,255,255,1)}
 tbody tr:last-child td{border-bottom:none}
 tbody tr:nth-child(even) td{background:#F9FAFB}
 .tbl-wrap-dark tbody tr:nth-child(even) td{background:rgba(255,255,255,.03)}
@@ -249,23 +249,11 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
 
 /* ============================
    COLOR INHERITANCE FIX
-   White/light-bg elements inside dark sections must override
-   the inherited white text from .s-dark / .s-mid parents
+   White-background elements inside dark sections need explicit
+   dark text — they inherit white from .s-dark/.s-mid otherwise
    ============================ */
-.s-dark .path-body,
-.s-mid .path-body { color: #1A1A2E; }
-
-.s-dark .card:not(.card-dark),
-.s-mid .card:not(.card-dark) { color: #1A1A2E; }
-
-.s-dark tbody td,
-.s-mid tbody td { color: #1A1A2E; }
-
-.s-dark .demo-form-panel,
-.s-mid .demo-form-panel { color: #1A1A2E; }
-
-.s-dark .path-step,
-.s-mid .path-step { color: #1A1A2E; }
+.path-body { color: #1A1A2E; }
+.path-step { color: #1A1A2E; }
 
 @media(max-width:768px){
   .grid-2,.grid-3,.grid-4,.demo-wrap,.hero-inner,.path-grid,.form-row-2{grid-template-columns:1fr}
@@ -296,7 +284,6 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
     <li><a href="#90days">90 Days</a></li>
   </ul>
   <div class="nav-right">
-    <button class="btn btn-ghost" onclick="togglePresent()">⛶ Present</button>
     <button class="btn btn-primary" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">▶ Live Demo</button>
   </div>
 </nav>
@@ -1446,9 +1433,6 @@ function updateActiveNav() {
   });
 }
 
-function togglePresent() {
-  document.body.classList.toggle('present-mode');
-}
 
 window.addEventListener('scroll', () => {
   updateProgress();
@@ -1472,13 +1456,6 @@ buildInspector();
 simulate('linkedin');
 updateProgress();
 
-// Present mode style
-const style = document.createElement('style');
-style.textContent = `
-  body.present-mode .nav-links { display: none; }
-  body.present-mode .nav-right .btn-ghost::before { content: '⛶ Exit'; }
-`;
-document.head.appendChild(style);
 </script>
 </body>
 </html>
