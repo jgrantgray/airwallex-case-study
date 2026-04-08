@@ -116,12 +116,6 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
 .insight{background:rgba(212,41,46,.06);border:1px solid rgba(212,41,46,.2);border-left:4px solid var(--brand-primary);border-radius:8px;padding:18px 22px;margin:20px 0}
 .insight-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--brand-primary);margin-bottom:6px}
 
-/* VIDEO SLOT */
-.video-slot{background:var(--brand-dark);border-radius:12px;padding:40px 32px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;min-height:220px;border:2px dashed rgba(255,255,255,.15);cursor:pointer;transition:all .2s}
-.video-slot:hover{border-color:var(--brand-primary)}
-.video-slot-icon{font-size:44px;opacity:.5}
-.video-slot-title{color:rgba(255,255,255,.75);font-weight:600;font-size:15px}
-.video-slot-sub{color:rgba(255,255,255,.35);font-size:12px}
 
 /* ============================
    HERO
@@ -156,7 +150,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
 .path-header{padding:20px 24px;color:white}
 .path-header.p1{background:linear-gradient(135deg,#1565C0,#0D47A1);border-bottom:3px solid #42A5F5}
 .path-header.p2{background:linear-gradient(135deg,#1B5E20,#2E7D32);border-bottom:3px solid #66BB6A}
-.path-body{background:white;padding:20px 24px}
+.path-body{background:white;padding:20px 24px;color:#1A1A2E}
 .path-step{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;font-size:14px}
 .path-step-n{width:22px;height:22px;border-radius:50%;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
 .p1 .path-step-n{background:#1565C0}
@@ -253,6 +247,26 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
 .green{color:#10B981}
 .blue{color:#2563EB}
 
+/* ============================
+   COLOR INHERITANCE FIX
+   White/light-bg elements inside dark sections must override
+   the inherited white text from .s-dark / .s-mid parents
+   ============================ */
+.s-dark .path-body,
+.s-mid .path-body { color: #1A1A2E; }
+
+.s-dark .card:not(.card-dark),
+.s-mid .card:not(.card-dark) { color: #1A1A2E; }
+
+.s-dark tbody td,
+.s-mid tbody td { color: #1A1A2E; }
+
+.s-dark .demo-form-panel,
+.s-mid .demo-form-panel { color: #1A1A2E; }
+
+.s-dark .path-step,
+.s-mid .path-step { color: #1A1A2E; }
+
 @media(max-width:768px){
   .grid-2,.grid-3,.grid-4,.demo-wrap,.hero-inner,.path-grid,.form-row-2{grid-template-columns:1fr}
   .nav-links{display:none}
@@ -345,7 +359,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
     <div class="section-label">Starting Point</div>
     <div class="sep"></div>
     <h2>Four problems this system solves</h2>
-    <p class="text-muted mb40">These aren't hypothetical. They came up directly in our conversation — this design addresses each one specifically.</p>
+    <p class="text-muted mb40">Each of these maps to a known gap in the current stack. The system design in the following sections resolves all four.</p>
 
     <div class="grid-2">
       <div class="card problem-card">
@@ -357,7 +371,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
       <div class="card problem-card">
         <div class="card-num">02</div>
         <h3>LinkedIn Leads Dropping</h3>
-        <p class="text-muted text-sm">Leads from LinkedIn Lead Gen Forms don't reliably arrive in Marketo via the LaunchPoint connector. No monitoring, no alerts, no reconciliation process.</p>
+        <p class="text-muted text-sm">Leads from LinkedIn campaigns are dropping before reaching Marketo. No monitoring, no alerts, no reconciliation process to even know how many are being lost.</p>
         <div class="tag tag-red">Known Issue</div>
       </div>
       <div class="card problem-card">
@@ -369,7 +383,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
       <div class="card problem-card">
         <div class="card-num">04</div>
         <h3>No Enterprise Infrastructure</h3>
-        <p class="text-muted text-sm">Airwallex is going upmarket. Enterprise leads need firmographic enrichment, different routing, longer attribution windows, and LinkedIn-heavy campaigns — none of which exist today.</p>
+        <p class="text-muted text-sm">Airwallex is going upmarket. Enterprise leads require firmographic enrichment, differentiated routing, longer attribution windows, and LinkedIn-heavy campaign architecture.</p>
         <div class="tag tag-purple">Strategic Priority</div>
       </div>
     </div>
@@ -672,7 +686,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
         <div class="scenario-bar">
           <button class="sc-btn sc-linkedin active" id="btn-linkedin" onclick="simulate('linkedin')">▶ LinkedIn Ad</button>
           <button class="sc-btn sc-google" id="btn-google" onclick="simulate('google')">▶ Google Ads</button>
-          <button class="sc-btn sc-organic" id="btn-organic" onclick="simulate('organic')">○ Organic</button>
+          <button class="sc-btn sc-organic" id="btn-organic" onclick="simulate('organic')">○ Organic / Direct</button>
         </div>
 
         <div class="inspector-url" id="url-display">Loading...</div>
@@ -744,13 +758,6 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
       </div>
     </div>
 
-    <div class="mt40">
-      <div class="video-slot">
-        <div class="video-slot-icon">▶</div>
-        <div class="video-slot-title">Loom: Live Form Hidden Field Capture Demo</div>
-        <div class="video-slot-sub">Replace with embed: &lt;iframe src="https://www.loom.com/embed/YOUR_ID" ...&gt;</div>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -805,7 +812,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
 
     <div class="insight">
       <div class="insight-label">⚠ Critical Sync Direction Rule — Most Likely Root Cause</div>
-      ALL attribution fields sync <strong>Marketo → SFDC only</strong>. Block SFDC → Marketo sync on these fields. Without this, SFDC Workflows, Process Builder, or Apex triggers can overwrite attribution data back into Marketo on the next sync cycle — even if Marketo-side bidirectional sync is unchecked. This is the most likely root cause of the blank Lead Source fields Wei Kuan described.
+      ALL attribution fields sync <strong>Marketo → SFDC only</strong>. Block SFDC → Marketo sync on these fields. Without this, SFDC Workflows, Process Builder, or Apex triggers can overwrite attribution data back into Marketo on the next sync cycle — even if Marketo-side bidirectional sync is unchecked. This is typically the root cause of blank or overwritten Lead Source fields.
     </div>
 
     <div class="mt40">
@@ -884,13 +891,6 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
       </div>
     </div>
 
-    <div class="mt40">
-      <div class="video-slot">
-        <div class="video-slot-icon">▶</div>
-        <div class="video-slot-title">Loom: Marketo Smart Campaign Walkthrough</div>
-        <div class="video-slot-sub">Replace with embed: &lt;iframe src="https://www.loom.com/embed/YOUR_ID" ...&gt;</div>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -902,7 +902,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
     <div class="section-label">Part 6</div>
     <div class="sep"></div>
     <h2>Lead Enrichment — Enabling the Upmarket Push</h2>
-    <p class="text-muted mb40">Without enrichment data, you can't route enterprise leads differently, score them properly, or give sales context before the first call. Airwallex is going upmarket — enrichment is now table stakes.</p>
+    <p class="text-muted mb40">Firmographic enrichment enables accurate routing between enterprise and SMB, proper lead scoring, and sales context before the first call — all critical for the upmarket motion.</p>
 
     <div class="grid-3 mb40">
       <div class="card">
@@ -978,7 +978,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
     <div class="section-label">Part 7</div>
     <div class="sep"></div>
     <h2>Spam &amp; Global Quality Controls</h2>
-    <p class="text-muted mb40">Certain APAC regions generate significantly higher spam volume from paid campaigns. Without controls, you're wasting ad spend on bot conversions and burning SDR time on fake leads.</p>
+    <p class="text-muted mb40">Spam volume varies significantly by region, particularly in parts of APAC. A composite scoring model with regional thresholds keeps bot conversions out of the CRM and ad platform optimization signals clean.</p>
 
     <div class="grid-2 mb40">
       <div>
@@ -1099,13 +1099,6 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
       </table>
     </div>
 
-    <div class="mt40">
-      <div class="video-slot">
-        <div class="video-slot-icon">▶</div>
-        <div class="video-slot-title">Loom: Debugging Walkthrough — Layer by Layer</div>
-        <div class="video-slot-sub">Replace with embed: &lt;iframe src="https://www.loom.com/embed/YOUR_ID" ...&gt;</div>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -1119,10 +1112,6 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
     <h2>Without Marketo — The Composable Future</h2>
     <p class="text-muted mb16">The architecture in Parts 1–8 already makes Marketo a swappable processing node. Attribution lives server-side. Lead Source mapping is API-driven. Enrichment is webhook-based. If Marketo stays, it processes and syncs. If it goes, nothing upstream breaks.</p>
 
-    <div class="insight mb40">
-      <div class="insight-label">My Recommendation</div>
-      Don't propose ripping Marketo out today. Instead, show the architecture is already designed for swappability. The decision to swap can be made later based on cost, scale, and capability needs — without re-architecting the system.
-    </div>
 
     <div class="tbl-wrap mb40">
       <table>
@@ -1200,7 +1189,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
           <div class="tl-title">Scale + The Dashboard</div>
           <div class="tl-body">
             Full regional spam controls deployed. Offline conversion feedback to Google Ads live.<br><br>
-            <strong>The dashboard Wei Kuan has been missing:</strong><br>
+            <strong>Campaign → pipeline dashboard:</strong><br>
             Campaign → pipeline report. Data sources: SFDC Opportunities + Marketo Program Membership + enrichment.<br><br>
             Segmented by: product line (Global Accounts vs. Spend Management vs. Embedded Finance), region (AMER vs. EMEA vs. APAC separately), and lead quality tier (ICP-fit enterprise vs. SMB vs. unqualified).<br><br>
             Key metrics: Cost per MQL and Cost per Pipeline dollar by segment — measuring whether going upmarket is working.
@@ -1316,18 +1305,18 @@ const SCENARIOS = {
   },
   organic: {
     label: 'Organic / Direct Visit',
-    url: 'airwallex.com/us/see-demo (no UTM params — this is the problem)',
+    url: 'airwallex.com/us/see-demo (no UTM params — defaults applied by JS)',
     params: {
-      utm_source: '',
-      utm_medium: '',
+      utm_source: 'direct',
+      utm_medium: 'none',
       utm_campaign: '',
       utm_content: '',
       utm_term: '',
       gclid: '',
       li_fat_id: '',
       paid_platform: '',
-      lead_source: '',
-      lead_source_segment: '',
+      lead_source: 'Organic / Direct',
+      lead_source_segment: 'ORG-001',
       referrer_url: 'https://airwallex.com/product',
       product_interest: ''
     }
@@ -1406,9 +1395,7 @@ function simulate(scenarioKey) {
         row.classList.add('has-val');
         row.classList.remove('no-val');
       } else {
-        valEl.textContent = scenarioKey === 'organic' && (f.key === 'utm_source' || f.key === 'lead_source')
-          ? '(BLANK — Wei\'s problem)'
-          : '(empty)';
+        valEl.textContent = '(empty)';
         row.classList.remove('has-val');
         row.classList.add('no-val');
       }
