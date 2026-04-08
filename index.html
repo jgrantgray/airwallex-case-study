@@ -104,7 +104,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
 .tbl-wrap-dark tbody tr:nth-child(even) td{background:rgba(255,255,255,.03)}
 
 /* CODE BLOCKS */
-.code{background:#0F172A;border-radius:10px;padding:20px 24px;font-family:'SF Mono','Fira Code',Consolas,monospace;font-size:13px;color:#CBD5E1;line-height:1.8;overflow-x:auto;border:1px solid rgba(255,255,255,.08)}
+.code{background:#0F172A;border-radius:10px;padding:20px 24px;font-family:'SF Mono','Fira Code',Consolas,monospace;font-size:13px;color:#CBD5E1;line-height:1.8;overflow-x:auto;border:1px solid rgba(255,255,255,.08);white-space:pre-wrap}
 .code .c{color:#475569}
 .code .g{color:#10B981}
 .code .y{color:#F59E0B}
@@ -282,6 +282,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
     <li><a href="#spam">Spam</a></li>
     <li><a href="#debug">Debug</a></li>
     <li><a href="#90days">90 Days</a></li>
+    <li><a href="#cn" style="color:rgba(255,255,255,.35);font-style:italic">CN ↗</a></li>
   </ul>
   <div class="nav-right">
     <button class="btn btn-primary" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">▶ Live Demo</button>
@@ -1229,6 +1230,87 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
 <!-- ============================
      CLOSE
      ============================ -->
+<!-- ============================
+     APPENDIX: CN ARCHITECTURE
+     ============================ -->
+<section id="cn" class="s-light">
+  <div class="container">
+    <div class="section-label">Appendix A — Pull Out If Asked</div>
+    <div class="sep"></div>
+    <h2>CN Architecture</h2>
+    <p class="text-muted mb40">China breaks every assumption in the global stack. It's not an edge case — it's a separate design constraint. This section exists as backup material; don't present it in the main flow unless Wei Kuan or the team member raises it.</p>
+
+    <div class="tbl-wrap mb40">
+      <table>
+        <thead><tr><th>Global Stack Assumption</th><th>CN Reality</th></tr></thead>
+        <tbody>
+          <tr><td>Google Ads</td><td>Blocked — runs on Baidu, WeChat Ads, Douyin instead</td></tr>
+          <tr><td>GCLID</td><td>Doesn't exist — Baidu has <code>bd_vid</code>, WeChat has its own click params</td></tr>
+          <tr><td>Google Tag Manager</td><td>Unreliable behind the GFW — needs domestic equivalent</td></tr>
+          <tr><td>First-party cookies</td><td>Stricter enforcement + ICP license requirements on the domain</td></tr>
+          <tr><td>Attribution API on global CDN</td><td>Latency issues if hosted outside CN — needs domestic endpoint</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-2 mb40">
+      <div>
+        <h3>CN-Specific Architecture</h3>
+        <div class="code mt12">
+<span class="b">Baidu / WeChat Ad Click</span>
+  <span class="r">→</span> CN Landing Page <span class="c">(ICP-licensed domain)</span>
+  <span class="r">→</span> CN Attribution Endpoint
+       <span class="c">(Alibaba Cloud or Tencent Cloud)</span>
+  <span class="r">→</span> Stores <span class="y">{visitorID: {bd_vid, wechat_click_id, utms}}</span>
+  <span class="r">→</span> Batch sync to global attribution store
+       <span class="c">(not real-time — respects data residency)</span>
+
+<span class="c">// Platform-agnostic field mapping</span>
+<span class="b">paid_click_id</span>  <span class="c">← bd_vid / gdt_vid / gclid / li_fat_id</span>
+<span class="b">paid_platform</span>  <span class="c">← BAIDU / WECHAT / DOUYIN / GOOGLE / LINKEDIN</span>
+
+<span class="c">// One conversion feedback service routes to</span>
+<span class="c">// the right platform API based on paid_platform</span>
+        </div>
+      </div>
+      <div>
+        <h3>Regional Node Architecture</h3>
+        <div class="code mt12">
+<span class="b">Global Attribution Store</span>
+  ├── AMER node <span class="c">(AWS US)</span>
+  ├── EMEA node <span class="c">(AWS EU — GDPR residency)</span>
+  ├── APAC node <span class="c">(AWS Singapore)</span>
+  └── CN node   <span class="c">(Alibaba Cloud — PIPL residency)</span>
+        ↓ batch sync <span class="c">(consented data only)</span>
+  <span class="b">Central reporting layer</span> <span class="c">(Snowflake)</span>
+
+<span class="c">// Marketo sees a clean lead with all attribution
+// fields populated regardless of origin.
+// Regional complexity is abstracted upstream.</span>
+        </div>
+
+        <div class="insight mt16">
+          <div class="insight-label">PIPL (China's Data Privacy Law)</div>
+          Explicit consent must be captured on the CN form and stored with the lead record <strong>before</strong> any enrichment or routing occurs. Data stays on Alibaba Cloud — no real-time sync to global infrastructure. Any CN scope in the first 90 days requires legal review.
+        </div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Platform</th><th>Click ID</th><th>Conversion API</th></tr></thead>
+        <tbody>
+          <tr><td>Google</td><td><code>gclid</code></td><td>Google Ads Conversion API</td></tr>
+          <tr><td>LinkedIn</td><td><code>li_fat_id</code></td><td>LinkedIn Conversions API</td></tr>
+          <tr><td>Baidu</td><td><code>bd_vid</code></td><td>Baidu OCR API</td></tr>
+          <tr><td>WeChat Ads</td><td><code>gdt_vid</code></td><td>WeChat Conversion API</td></tr>
+          <tr><td>Douyin</td><td><code>clickid</code></td><td>Douyin Conversion API</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <section class="close-hero">
   <div class="container">
     <div class="close-circle">✓</div>
