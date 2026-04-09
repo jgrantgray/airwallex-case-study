@@ -599,7 +599,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
     <p class="text-muted mb16">Click a scenario below to simulate an ad click. Watch the hidden fields populate automatically — and see Lead Source map itself without a manual SFDC upload.</p>
 
     <div class="insight mb24">
-      <div class="insight-label">💡 This demo solves Wei Kuan's #1 problem</div>
+      <div class="insight-label">💡 This eliminates the manual SFDC upload</div>
       The manual spreadsheet → SFDC upload is replaced by a webhook lookup that auto-maps UTMs to Lead Source + Lead Source Segment on every form fill. No upload. No silent failures. No blank fields.
     </div>
 
@@ -1053,7 +1053,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
             <div class="tl-dot"></div>
             <div class="tl-label">Layer 4 ← Most Likely Here</div>
             <div class="tl-title" style="color:white">Marketo → SFDC Sync</div>
-            <div class="tl-body" style="color:rgba(255,255,255,.6)">Check Marketo sync error log. Verify field mapping: Marketo <code>GCLID</code> → SFDC <code>GCLID__c</code>. <strong style="color:#FF8080">Audit every Workflow, Process Builder, and Apex trigger that fires on lead creation and may overwrite Lead Source, Lead Source Segment, or GCLID.</strong> This is the most likely root cause given Wei Kuan's description.</div>
+            <div class="tl-body" style="color:rgba(255,255,255,.6)">Check Marketo sync error log. Verify field mapping: Marketo <code>GCLID</code> → SFDC <code>GCLID__c</code>. <strong style="color:#FF8080">Audit every Workflow, Process Builder, and Apex trigger that fires on lead creation and may overwrite Lead Source, Lead Source Segment, or GCLID.</strong> This is typically the root cause of blank or overwritten attribution fields.</div>
           </div>
           <div class="tl-item">
             <div class="tl-dot"></div>
@@ -1154,7 +1154,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
           <div class="tl-label">Week 3–4</div>
           <div class="tl-title">Monitoring Live</div>
           <div class="tl-body">Daily reconciliation reports live. Automated alerts for sync errors, blank Lead Source fields, LinkedIn drops. LinkedIn LaunchPoint immediately diagnosable issues fixed.</div>
-          <div class="tl-win">✓ Quick Win: Wei Kuan gets automated visibility into the problems that were previously invisible</div>
+          <div class="tl-win">✓ Quick Win: Growth Marketing leadership gets automated visibility into attribution gaps</div>
         </div>
       </div>
 
@@ -1238,7 +1238,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
     <div class="section-label">Appendix A — Pull Out If Asked</div>
     <div class="sep"></div>
     <h2>CN Architecture</h2>
-    <p class="text-muted mb40">China breaks every assumption in the global stack. It's not an edge case — it's a separate design constraint. This section exists as backup material; don't present it in the main flow unless Wei Kuan or the team member raises it.</p>
+    <p class="text-muted mb40">China breaks every assumption in the global stack. It's not an edge case — it's a separate design constraint. This section exists as backup material; don't present it in the main flow unless the team raises it.</p>
 
     <div class="tbl-wrap mb40">
       <table>
@@ -1316,7 +1316,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
     <div class="close-circle">✓</div>
     <h2 style="font-size:42px;margin-bottom:16px">Ready to Start Day 1</h2>
     <p style="color:rgba(255,255,255,.55);max-width:560px;margin:0 auto 32px;font-size:18px">
-      The system design is done. The audit checklist is ready. The manual upload gets eliminated in Week 2, and Wei Kuan gets her campaign → pipeline dashboard by Day 90.
+      The system design is done. The audit checklist is ready. The manual upload gets eliminated in Week 2, and the campaign → pipeline dashboard ships by Day 90.
     </p>
     <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
       <a href="#problems" style="padding:14px 28px;background:var(--brand-primary);color:white;border-radius:9px;text-decoration:none;font-weight:700;font-size:15px">↑ Review the System</a>
