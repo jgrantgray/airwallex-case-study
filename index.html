@@ -282,7 +282,6 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
     <li><a href="#spam">Spam</a></li>
     <li><a href="#debug">Debug</a></li>
     <li><a href="#90days">90 Days</a></li>
-    <li><a href="#cn" style="color:rgba(255,255,255,.35);font-style:italic">CN ↗</a></li>
   </ul>
   <div class="nav-right">
     <button class="btn btn-primary" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">▶ Live Demo</button>
@@ -579,10 +578,6 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
           Any link crossing domains appends <code>?awx_vid={visitorID}</code>. Destination page reads param, re-sets first-party cookie on new domain. All domains resolve attribution through the central API using the visitor ID. One GTM tag handles link decoration automatically.
         </div>
 
-        <div class="card mt16" style="background:#F0FDF4;border-color:#BBF7D0">
-          <h4 style="color:#065F46">CN Architecture (Appendix)</h4>
-          <p class="text-sm" style="color:#047857;margin:0">Google Ads, GCLID, GTM — all blocked behind GFW. Separate CN ingestion endpoint on Alibaba Cloud. Baidu BDCLID + WeChat click IDs mapped to platform-agnostic <code>paid_click_id</code> field. PIPL: explicit consent before enrichment, data stays in-country. Available in full detail on request.</p>
-        </div>
       </div>
     </div>
   </div>
@@ -833,7 +828,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
     <span class="r">END</span> <span class="c">(do not sync to SFDC)</span>
         </div>
         <div class="code">
-<span class="r">Step 5:</span> <span class="g">Enrichment Webhook → Clearbit</span>
+<span class="r">Step 5:</span> <span class="g">Enrichment Webhook → Enrichment API</span>
   <span class="c">Send: email, company name</span>
   <span class="c">Receive: size, revenue, industry, HQ, tech stack</span>
   <span class="c">Timeout: 5s → skip, queue for batch</span>
@@ -896,12 +891,12 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
       <div class="card">
         <div class="card-icon">🏢</div>
         <h4>Company Data</h4>
-        <p class="text-sm text-muted">Size, revenue, industry, HQ location, tech stack, funding stage. Source: Clearbit Enrichment API (real-time webhook, sub-second).</p>
+        <p class="text-sm text-muted">Size, revenue, industry, HQ location, tech stack, funding stage. Source: enrichment API — Clearbit, ZoomInfo, Apollo, or equivalent (real-time webhook, sub-second).</p>
       </div>
       <div class="card">
         <div class="card-icon">👤</div>
         <h4>Person Data</h4>
-        <p class="text-sm text-muted">Title normalization → seniority level, LinkedIn URL, direct dial. Source: Clearbit for real-time; ZoomInfo for batch and phone data.</p>
+        <p class="text-sm text-muted">Title normalization → seniority level, LinkedIn URL, direct dial. Source: enrichment provider for real-time; batch supplementation for phone data.</p>
       </div>
       <div class="card">
         <div class="card-icon">🎯</div>
@@ -927,7 +922,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
 
         <div class="insight mt16">
           <div class="insight-label">Webhook Reliability</div>
-          Clearbit outage must NOT block lead processing. Set webhook timeout to 5 seconds. On timeout, skip enrichment and continue to scoring + routing. Failed enrichments queue for nightly batch re-enrichment.
+Enrichment API outage must NOT block lead processing. Set webhook timeout to 5 seconds. On timeout, skip enrichment and continue to scoring + routing. Failed enrichments queue for nightly batch re-enrichment.
         </div>
       </div>
       <div>
@@ -935,7 +930,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
         <div class="code mt12">
 <span class="b">Form Fill</span>
   <span class="r">→</span> Marketo Trigger Campaign
-    <span class="r">→</span> <span class="g">Webhook → Clearbit API</span>
+    <span class="r">→</span> <span class="g">Webhook → Enrichment API</span>
        Send: email, company name
        Receive: size, revenue, industry,
                 HQ, tech_stack, seniority
@@ -1168,7 +1163,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
             GCLID capture on all landing pages via GTM. First-touch / last-touch field architecture in Marketo + SFDC.<br><br>
             Lock down sync direction: attribution fields = Marketo → SFDC only.<br><br>
             Audit and disable SFDC automation overwriting attribution fields.<br><br>
-            Clearbit real-time enrichment webhook live. Global form redesign deployed with full hidden field set. reCAPTCHA v3 + honeypot + business email validation across all regions.
+Real-time enrichment webhook live. Global form redesign deployed with full hidden field set. reCAPTCHA v3 + honeypot + business email validation across all regions.
           </div>
         </div>
         <div class="tl-item">
@@ -1206,7 +1201,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
           <p class="text-sm">✓ SFDC admin access allows implementing field-level security on attribution fields</p>
           <p class="text-sm">✓ LinkedIn LaunchPoint issues are fixable at the connector/config level — not a fundamental integration failure</p>
           <p class="text-sm">✓ Sales team accepts locked-down attribution fields (requires Sales Ops governance buy-in)</p>
-          <p class="text-sm" style="margin:0">✓ Airwallex can procure an enrichment vendor (Clearbit, ZoomInfo, or similar)</p>
+          <p class="text-sm" style="margin:0">✓ Airwallex can integrate a firmographic enrichment provider (Clearbit, ZoomInfo, Apollo, or equivalent)</p>
         </div>
       </div>
       <div>
@@ -1231,11 +1226,12 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
      CLOSE
      ============================ -->
 <!-- ============================
-     APPENDIX: CN ARCHITECTURE
+     APPENDIX: CN ARCHITECTURE (hidden by default)
      ============================ -->
+<div id="cn-wrapper" style="display:none">
 <section id="cn" class="s-light">
   <div class="container">
-    <div class="section-label">Appendix A — Pull Out If Asked</div>
+    <div class="section-label">China Architecture</div>
     <div class="sep"></div>
     <h2>CN Architecture</h2>
     <p class="text-muted mb40">China breaks every assumption in the global stack. It's not an edge case — it's a separate design constraint. This section exists as backup material; don't present it in the main flow unless the team raises it.</p>
@@ -1310,6 +1306,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
     </div>
   </div>
 </section>
+</div><!-- /cn-wrapper -->
 
 <section class="close-hero">
   <div class="container">
@@ -1323,7 +1320,7 @@ tbody tr:nth-child(even) td{background:#F9FAFB}
       <a href="#demo" style="padding:14px 28px;background:rgba(255,255,255,.1);color:white;border-radius:9px;text-decoration:none;font-weight:700;font-size:15px;border:1px solid rgba(255,255,255,.2)">▶ Live Demo Again</a>
     </div>
     <div style="margin-top:60px;padding-top:32px;border-top:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.3);font-size:13px">
-      Grant Gray — Manager, Marketing Operations — Case Study for Airwallex
+      Grant Gray — Manager, Marketing Operations — <span onclick="showCN()" style="cursor:default">C</span>ase Study for Airwallex
     </div>
   </div>
 </section>
@@ -1489,7 +1486,19 @@ function submitDemo() {
     alert('Fill in First Name and Business Email to see the demo submission.');
     return;
   }
-  alert('✓ Demo submitted!\n\nIn production:\n• Hidden fields (UTMs, GCLID, visitor_id) sent with form\n• Marketo processes → webhook maps Lead Source\n• Lead scored, enriched via Clearbit, routed to SFDC\n• No manual upload. No blank fields.');
+  alert('✓ Demo submitted!\n\nIn production:\n• Hidden fields (UTMs, GCLID, visitor_id) sent with form\n• Marketo processes → webhook maps Lead Source\n• Lead scored, enriched via enrichment API, routed to SFDC\n• No manual upload. No blank fields.');
+}
+
+// ============================================================
+// CN ARCHITECTURE TOGGLE
+// ============================================================
+function showCN(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  const wrapper = document.getElementById('cn-wrapper');
+  wrapper.style.display = 'block';
+  setTimeout(function() {
+    document.getElementById('cn').scrollIntoView({ behavior: 'smooth' });
+  }, 50);
 }
 
 // ============================================================
